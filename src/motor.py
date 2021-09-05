@@ -9,7 +9,7 @@ class StepMode(Enum):
     FULL = 100
     HALF = 75
     QUARTER = 75
-    EIGHTH = 500
+    EIGHTH = 75
     SIXTEENTH = 75
     THIRTYSECOND = 75
 
@@ -50,10 +50,10 @@ class Motor:
 
     def set_mode(self, mode: StepMode) -> None:
         try:
-            M0, M1, M2 = step_mode_voltage_outputs.get(mode)
-            GPIO.output(M0, GPIO.HIGH)
-            GPIO.output(M1, GPIO.HIGH)
-            GPIO.output(M2, GPIO.LOW)
+            V0, V1, V2 = step_mode_voltage_outputs.get(mode)
+            GPIO.output(self.mode_pins[0], V0)
+            GPIO.output(self.mode_pins[1], V1)
+            GPIO.output(self.mode_pins[2], V2)
         except Exception as ex:
             print(f"Error setting stepper motor mode: {ex}")
             raise
@@ -71,6 +71,8 @@ class Motor:
     def move(self, direction: Direction, steps: int, mode: StepMode = None) -> None:
         if not mode:
             mode = self.step_mode
+
+        self.set_mode(mode)
 
         try:
             self.set_direction(direction)

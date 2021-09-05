@@ -26,14 +26,14 @@ class Main:
 
     def run(self) -> None:
         print("Motor 1 going")
-        motor1.move(Direction.CW, 200, StepMode.EIGHTH)
-        motor1.move(Direction.CCW, 200 * 2, StepMode.EIGHTH)
-        motor1.move(Direction.CW, 200, StepMode.EIGHTH)
+        motor1.move(Direction.CW, 200 * 8, StepMode.EIGHTH)
+        motor1.move(Direction.CCW, 200 * 2 * 8, StepMode.EIGHTH)
+        motor1.move(Direction.CW, 200 * 8, StepMode.EIGHTH)
 
         print("Motor 2 going")
-        motor2.move(Direction.CW, 200, StepMode.EIGHTH)
-        motor2.move(Direction.CCW, 200 * 2, StepMode.EIGHTH)
-        motor2.move(Direction.CW, 200, StepMode.EIGHTH)
+        motor2.move(Direction.CW, 200 * 8, StepMode.EIGHTH)
+        motor2.move(Direction.CCW, 200 * 2 * 8, StepMode.EIGHTH)
+        motor2.move(Direction.CW, 200 * 8, StepMode.EIGHTH)
 
 
 app: Main = Main()
