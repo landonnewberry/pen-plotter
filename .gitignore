@@ -1,1 +1,11 @@
 *.DS_Store
+
+# Python virtualenv
+env/
+env/*
+
+# IDE
+.vscode/
+.vscode/*
+
+*__pycache__*
