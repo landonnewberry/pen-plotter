@@ -8,10 +8,10 @@ from utils import delay_ms
 class StepMode(Enum):
     FULL = 100
     HALF = 75
-    QUARTER = 75
-    EIGHTH = 75
-    SIXTEENTH = 75
-    THIRTYSECOND = 75
+    QUARTER = 70
+    EIGHTH = 60
+    SIXTEENTH = 40
+    THIRTYSECOND = 45
 
 
 class Direction(Enum):
@@ -50,7 +50,7 @@ class Motor:
 
     def set_mode(self, mode: StepMode) -> None:
         try:
-            V0, V1, V2 = step_mode_voltage_outputs.get(mode)
+            V0, V1, V2 = step_mode_voltage_outputs[mode]
             GPIO.output(self.mode_pins[0], V0)
             GPIO.output(self.mode_pins[1], V1)
             GPIO.output(self.mode_pins[2], V2)
@@ -73,19 +73,14 @@ class Motor:
             mode = self.step_mode
 
         self.set_mode(mode)
+        self.set_direction(direction)
 
         try:
-            self.set_direction(direction)
-
-            try:
-                for _ in range(steps):
-                    GPIO.output(self.step_pin, GPIO.HIGH)
-                    delay_ms(mode.value)
-                    GPIO.output(self.step_pin, GPIO.LOW)
-                    delay_ms(mode.value)
-            except Exception as ex:
-                print(f"Error while pulsing the stepper motor {ex}")
-                raise
-
+            for _ in range(steps):
+                GPIO.output(self.step_pin, GPIO.HIGH)
+                delay_ms(mode.value)
+                GPIO.output(self.step_pin, GPIO.LOW)
+                delay_ms(mode.value)
         except Exception as ex:
-            print(f"There was an error moving the motor {steps} steps: {ex}")
+            print(f"Error while pulsing the stepper motor {ex}")
+            raise

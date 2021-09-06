@@ -24,6 +24,8 @@ class Config:
     M2_PIN = 40
 
     def __init__(self):
+        GPIO.setwarnings(False)
+
         GPIO.setmode(GPIO.BOARD)
 
         GPIO.setup(self.M1_STEP_PIN, GPIO.OUT)
