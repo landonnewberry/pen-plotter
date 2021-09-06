@@ -1,18 +1,20 @@
 from config import Config
-from motor import Direction, Motor, StepMode
-from constants import pinouts
-from utils import delay_ms
+from constants.stepper_mode import StepperModes
+from motor import Direction, Motor
+from constants import pinouts, motor_specs
 
 motor1: Motor = Motor(
     step_pin=pinouts.M1_STEP_PIN,
     direction_pin=pinouts.M1_DIR_PIN,
     mode_pins=(pinouts.M0_PIN, pinouts.M1_PIN, pinouts.M2_PIN),
+    steps_per_rotation=motor_specs.STEPS_PER_ROTATION,
 )
 
 motor2: Motor = Motor(
     step_pin=pinouts.M2_STEP_PIN,
     direction_pin=pinouts.M2_DIR_PIN,
     mode_pins=(pinouts.M0_PIN, pinouts.M1_PIN, pinouts.M2_PIN),
+    steps_per_rotation=motor_specs.STEPS_PER_ROTATION,
 )
 
 
@@ -21,23 +23,16 @@ class PenPlotter:
 
     def __init__(self) -> None:
         self.config = Config()
+        motor1.set_acceleration(rotation_percentage=100, growth_factor=20)
+        motor2.set_acceleration(rotation_percentage=100, growth_factor=20)
 
     def run(self) -> None:
         print("Motor 1 going")
-        multiplier = 16
-        stop_delay_ms = 3000
-
-        motor1.move(Direction.CW, 200 * multiplier, StepMode.SIXTEENTH)
-        delay_ms(stop_delay_ms)
-        motor1.move(Direction.CCW, 200 * 2 * multiplier, StepMode.SIXTEENTH)
-        delay_ms(stop_delay_ms)
-        motor1.move(Direction.CW, 200 * multiplier, StepMode.SIXTEENTH)
-        delay_ms(stop_delay_ms)
+        motor1.move(Direction.CW, 200, StepperModes.SIXTEENTH)
+        motor1.move(Direction.CCW, 200 * 2, StepperModes.SIXTEENTH)
+        motor1.move(Direction.CW, 200, StepperModes.SIXTEENTH)
 
         print("Motor 2 going")
-        motor2.move(Direction.CW, 200 * multiplier, StepMode.SIXTEENTH)
-        delay_ms(stop_delay_ms)
-        motor2.move(Direction.CCW, 200 * 2 * multiplier, StepMode.SIXTEENTH)
-        delay_ms(stop_delay_ms)
-        motor2.move(Direction.CW, 200 * multiplier, StepMode.SIXTEENTH)
-        delay_ms(stop_delay_ms)
+        motor2.move(Direction.CW, 200, StepperModes.SIXTEENTH)
+        motor2.move(Direction.CCW, 200 * 2, StepperModes.SIXTEENTH)
+        motor2.move(Direction.CW, 200, StepperModes.SIXTEENTH)
