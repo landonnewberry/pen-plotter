@@ -2,8 +2,8 @@ import math
 from typing import List, Tuple
 import RPi.GPIO as GPIO
 from enum import Enum
-from constants.stepper_mode import StepperModes, StepperMode
-from utils import delay_ms
+from DRV8825_driver.stepper_mode import StepperModes, StepperMode
+from DRV8825_driver.utils import delay_ms
 
 
 class Direction(Enum):
